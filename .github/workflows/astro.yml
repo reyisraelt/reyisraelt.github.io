@@ -59,7 +59,10 @@ jobs:
         with:
           node-version: "16"
           cache: 'pnpm'
-          cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml      
+          cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml
+      - uses: sanity-io/github-action-sanity@v0.2-alpha
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
