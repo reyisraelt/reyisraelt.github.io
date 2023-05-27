@@ -62,9 +62,9 @@ jobs:
           cache-dependency-path: ${{ env.BUILD_PATH }}/frontend/pnpm-lock.yaml
       - name: Deploy Sanity Studio
         run: |
-          pnpm i -D @sanity/cli
           cd studio
-          sanity deploy
+          npx @sanity/cli init
+          npx sanity start
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
       - name: Setup Pages
