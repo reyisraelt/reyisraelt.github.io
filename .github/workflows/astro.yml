@@ -65,7 +65,6 @@ jobs:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         with:
           args: deploy
-        working-directory: ${{ env.BUILD_PATH }}/studio
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
