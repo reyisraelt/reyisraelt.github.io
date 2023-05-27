@@ -51,14 +51,14 @@ jobs:
             echo "Unable to determine package manager"
             exit 1
           fi
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 7
       - name: Setup Node
         uses: actions/setup-node@v3
         with:
           node-version: "16"
           cache: 'pnpm'
-          cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml
-      - name: Install dependencies
-        run: pnpm install          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
