@@ -63,7 +63,7 @@ jobs:
       - name: Deploy Sanity Studio
         run: |
           cd studio
-          pnpm install -D @sanity/cli
+          pnpm install @sanity/cli
           sanity deploy
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
