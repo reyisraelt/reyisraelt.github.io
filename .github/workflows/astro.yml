@@ -62,7 +62,7 @@ jobs:
           cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml
       - name: Deploy Sanity Studio
         run: |
-          pnpm i -g @sanity/cli
+          pnpm i -D @sanity/cli
           cd studio
           sanity deploy
         env:
