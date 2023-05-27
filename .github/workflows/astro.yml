@@ -63,8 +63,7 @@ jobs:
       - name: Deploy Sanity Studio
         run: |
           cd studio
-          npx @sanity/cli init
-          npx sanity start
+          npx @sanity/cli deploy
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
       - name: Setup Pages
