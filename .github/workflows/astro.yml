@@ -60,12 +60,11 @@ jobs:
           node-version: "16"
           cache: 'pnpm'
           cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml
-      - name: Install Sanity
-        id: 'install-sanity'
-        run: npm i -g @sanity/cli
-      - name: Run Sanity
-        id: 'build-sanity'
-        run: sanity install && SANITY_AUTH_TOKEN=${{ secrets.SANITY_AUTH_TOKEN }} sanity dataset export production backups/production-${{ steps.date.outputs.date }}.tar.gz
+      - uses: sanity-io/github-action-sanity@v0.2-alpha
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        with:
+          args: deploy          
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
