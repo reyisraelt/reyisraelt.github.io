@@ -25,7 +25,7 @@ concurrency:
   cancel-in-progress: false
 
 env:
-  BUILD_PATH: "./frontend"
+  BUILD_PATH: "."
 
 jobs:
   build:
@@ -59,12 +59,12 @@ jobs:
         with:
           node-version: "16"
           cache: 'pnpm'
-          cache-dependency-path: ${{ env.BUILD_PATH }}/pnpm-lock.yaml
+          cache-dependency-path: ${{ env.BUILD_PATH }}/frontend/pnpm-lock.yaml
       - name: Deploy Sanity Studio
         run: |
-          pnpm i -D @sanity/cli
+          pnpm i -g @sanity/cli
           cd studio
-          sanity deploy
+          npx @sanity/cli deploy
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
       - name: Setup Pages
