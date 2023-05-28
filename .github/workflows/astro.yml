@@ -66,14 +66,13 @@ jobs:
       - name: Install studio dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
         working-directory: ${{ env.BUILD_PATH }}/studio
-      # - name: Deploy Sanity
-      #   env:
-      #     SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
-      #   run: pnpm install -g @sanity/cli &&
-      #     sanity install && 
-      #     SANITY_AUTH_TOKEN=$SANITY_AUTH_TOKEN &&
-      #     sanity deploy
-      #   working-directory: ${{ env.BUILD_PATH }}/studio
+      - name: Deploy Sanity
+        env:
+          SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
+        run: pnpm install -g @sanity/cli &&
+          sanity install && 
+          SANITY_AUTH_TOKEN=$SANITY_AUTH_TOKEN
+        working-directory: ${{ env.BUILD_PATH }}/studio
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
