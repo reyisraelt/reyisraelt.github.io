@@ -59,34 +59,37 @@ jobs:
         with:
           node-version: "16"
           cache: 'pnpm'
-          cache-dependency-path: ${{ env.BUILD_PATH }}/frontend/pnpm-lock.yaml
+          cache-dependency-path: frontend/pnpm-lock.yaml
+      - name: Install Project Dependencies 
+        run: npm ci 
+        working-directory: studio          
       - name: Install studio dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ${{ env.BUILD_PATH }}/studio
+        working-directory: studio
       - name: Deploy Sanity
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
-        run: pnpm install -g @sanity/cli &&
+        run: npm install -g @sanity/cli &&
           sanity install && 
           SANITY_AUTH_TOKEN=$SANITY_AUTH_TOKEN &&
           sanity deploy
-        working-directory: ${{ env.BUILD_PATH }}/studio
+        working-directory: studio
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
       - name: Install frontend dependencies
         run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ${{ env.BUILD_PATH }}/frontend
+        working-directory: frontend
       - name: Build with Astro
         run: |
           ${{ steps.detect-package-manager.outputs.runner }} astro build \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
-        working-directory: ${{ env.BUILD_PATH }}/frontend
+        working-directory: frontend
       - name: Upload artifact
         uses: actions/upload-pages-artifact@v1
         with:
-          path: ${{ env.BUILD_PATH }}/dist
+          path: dist
 
   deploy:
     environment:
