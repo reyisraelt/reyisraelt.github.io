@@ -66,10 +66,11 @@ jobs:
       - name: Deploy Sanity
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
-        run: npm install -g @sanity/cli &&
+        run: pnpm install -g @sanity/cli &&
           sanity install && 
           SANITY_AUTH_TOKEN=$SANITY_AUTH_TOKEN &&
           sanity deploy
+        working-directory: ${{ env.BUILD_PATH }}/studio
       - name: Setup Pages
         id: pages
         uses: actions/configure-pages@v3
