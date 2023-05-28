@@ -34,23 +34,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
-      - name: Detect package manager
-        id: detect-package-manager
-        run: |
-          if [ -f "${{ github.workspace }}/frontend/pnpm-lock.yaml" ]; then
-            echo "manager=pnpm" >> $GITHUB_OUTPUT
-            echo "command=install" >> $GITHUB_OUTPUT
-            echo "runner=pnpm" >> $GITHUB_OUTPUT
-            exit 0
-          elif [ -f "${{ github.workspace }}/frontend/package.json" ]; then
-            echo "manager=npm" >> $GITHUB_OUTPUT
-            echo "command=ci" >> $GITHUB_OUTPUT
-            echo "runner=npx --no-install" >> $GITHUB_OUTPUT
-            exit 0
-          else
-            echo "Unable to determine package manager"
-            exit 1
-          fi
       - uses: pnpm/action-setup@v2
         with:
           version: 7
@@ -60,13 +43,13 @@ jobs:
           node-version: "16"
           cache: 'pnpm'
           cache-dependency-path: ${{ env.BUILD_PATH }}/frontend/pnpm-lock.yaml
-      - name: Install Project Dependencies 
+      - name: Install Studio Dependencies 
         run: pnpm install
         working-directory: ${{ env.BUILD_PATH }}/studio          
-      - name: Install studio dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
-        working-directory: ${{ env.BUILD_PATH }}/studio
-      - name: Deploy Sanity
+      - name: Install Frontend Dependencies 
+        run: pnpm install
+        working-directory: ${{ env.BUILD_PATH }}/frontend
+      - name: Install Sanity
         env:
           SANITY_AUTH_TOKEN: ${{ secrets.SANITY_AUTH_TOKEN }}
         run: pnpm install -g @sanity/cli &&
@@ -81,7 +64,7 @@ jobs:
         working-directory: ${{ env.BUILD_PATH }}/frontend
       - name: Build with Astro
         run: |
-          ${{ steps.detect-package-manager.outputs.runner }} astro build \
+          pnpm astro build \
             --site "${{ steps.pages.outputs.origin }}" \
             --base "${{ steps.pages.outputs.base_path }}"
         working-directory: ${{ env.BUILD_PATH }}/frontend
